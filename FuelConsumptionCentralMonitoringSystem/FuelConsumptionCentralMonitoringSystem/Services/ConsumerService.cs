@@ -37,7 +37,7 @@ namespace FuelConsumptionCentralMonitoringSystem.Services
                     {
                         CMSService.DisplayReport(fuelDictionary);
                         await _reader.Completion;
-
+                        Logger.Log("Reading Completed...");
                     }
 
                 }

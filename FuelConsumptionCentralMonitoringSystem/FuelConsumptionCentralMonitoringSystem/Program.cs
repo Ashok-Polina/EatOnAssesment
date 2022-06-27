@@ -15,7 +15,7 @@ namespace FuelConsumptionCentralMonitoringSystem
         static async Task Main(string[] args)
         {
             
-            await Run(100, 40, 1);
+            await Run(100, 40, 2);
 
             Logger.Log("done!");
             Console.ReadLine();
@@ -33,6 +33,7 @@ namespace FuelConsumptionCentralMonitoringSystem
 
             List<UtilityVechile> vechiles = new List<UtilityVechile>();
            
+            //Creating Instances for Utility Vechiles Based on Number of Vechiles Starting
             for(int i=1; i<= producersCount; i++)
             {
                 vechiles.Add(new UtilityVechile(i,15));
@@ -66,15 +67,15 @@ namespace FuelConsumptionCentralMonitoringSystem
             {
                 _ = new ProducerService(channel.Writer, vechile.VehicleId)
                         .PushMsg(vechile, tokenSource).ConfigureAwait(false);
-            }));
+            })).ToArray();
 
             await Task.WhenAll(tasks);
 
-            Logger.Log("done publishing, closing writer");
-            channel.Writer.Complete();
+            //Logger.Log("done publishing, closing writer");
+            //channel.Writer.Complete();
 
-            Logger.Log("waiting for consumer to complete...");
-            await channel.Reader.Completion;
+            ////Logger.Log("waiting for consumer to complete...");
+            ////await channel.Reader.Completion;
 
             Logger.Log("Consumers done processing, shutting down...");
             tokenSource.Cancel();

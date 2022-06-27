@@ -33,9 +33,9 @@ namespace FuelConsumptionCentralMonitoringSystem.Services
                 }
                token.Cancel();
             }
-            catch(Exception ex)
+            catch (OperationCanceledException ex)
             {
-                string msh = ex.Message;
+                _writer.Complete();
             }
         }
 
