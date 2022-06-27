@@ -3,3 +3,5 @@
 ################################################################################
 
 /FuelConsumptionCentralMonitoringSystem/FuelConsumptionCentralMonitoringSystem/obj
+/.vs
+/FuelConsumptionCentralMonitoringSystem/FuelConsumptionCentralMonitoringSystem/bin/Debug/netcoreapp3.1
