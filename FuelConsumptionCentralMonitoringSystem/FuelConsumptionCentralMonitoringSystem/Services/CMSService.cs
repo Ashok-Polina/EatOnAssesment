@@ -95,13 +95,5 @@ namespace FuelConsumptionCentralMonitoringSystem.Services
 
             return refuelTruck;
         }
-        //   //      "Fuel Truck Id {} is going out with {}gallons of fuel for the following vehicles."
-
-        //    foreach(var v in vehicles){
-        //      
-        //        }
-
-        //Logger.Log("waiting for consumer to complete...");
-
     }
 }

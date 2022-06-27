@@ -23,9 +23,8 @@ namespace FuelConsumptionCentralMonitoringSystem
 
         private static async Task Run(int maxMessagesToBuffer, int producersCount, int consumersCount)
         {
-            Logger.Log("*** STARTING EXECUTION ***");
-            Logger.Log($"producers #: {producersCount}, buffer size: {maxMessagesToBuffer}, consumers #: {consumersCount}");
-
+            Logger.Log("*** FUEL MONITORING SYSTEM STARTED ***", ConsoleColor.Red);
+            Logger.Log($"UtilityVechiles #: {producersCount}, buffer size: {maxMessagesToBuffer}, MonitoringSysytems #: {consumersCount}", ConsoleColor.Blue);
 
             var channel = Channel.CreateBounded<Message>(maxMessagesToBuffer);
 
@@ -63,12 +62,13 @@ namespace FuelConsumptionCentralMonitoringSystem
             CancellationTokenSource tokenSource)
         {
 
-            Parallel.For(0, vehicles.Count,
-                   index =>
-                   {
-                       _ = new ProducerService(channel.Writer, vehicles[index].VehicleId)
-                        .PushMsg(vehicles[index]).ConfigureAwait(false);
-                   });
+            var tasks = vehicles.Select((vechile) => Task.Run(() =>
+            {
+                _ = new ProducerService(channel.Writer, vechile.VehicleId)
+                        .PushMsg(vechile, tokenSource).ConfigureAwait(false);
+            }));
+
+            await Task.WhenAll(tasks);
 
             Logger.Log("done publishing, closing writer");
             channel.Writer.Complete();

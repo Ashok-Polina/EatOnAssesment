@@ -21,15 +21,21 @@ namespace FuelConsumptionCentralMonitoringSystem.Services
             _instanceId = instanceId;
         }
 
-        public async Task PushMsg(UtilityVechile vechile)
+        public async Task PushMsg(UtilityVechile vechile, CancellationTokenSource token)
         {
-            
-            while(vechile.FuelTankCapacity > 3)
+            try
             {
+                while (vechile.FuelTankCapacity > 3)
+                {
+                    vechile.FuelTankCapacity = vechile.FuelTankCapacity - 1;
+                    await PublishAsync(new Message() { TruckId = vechile.VehicleId, CurrentGas = vechile.FuelTankCapacity });
 
-                vechile.FuelTankCapacity = vechile.FuelTankCapacity - 2;
-                await PublishAsync(new Message() { TruckId = vechile.VehicleId, CurrentGas = vechile.FuelTankCapacity });
-               
+                }
+               token.Cancel();
+            }
+            catch(Exception ex)
+            {
+                string msh = ex.Message;
             }
         }
 
