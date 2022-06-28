@@ -32,6 +32,7 @@ namespace FuelConsumptionCentralMonitoringSystem.Services
                 {
                     vechile.FuelTankCapacity = vechile.FuelTankCapacity - 1;
                     await PublishAsync(new Message() { TruckId = vechile.VehicleId, CurrentGas = vechile.FuelTankCapacity }, source.Token);
+                    await Task.Delay(15);
                 }
                 source.Cancel();
                 _writer.TryComplete();

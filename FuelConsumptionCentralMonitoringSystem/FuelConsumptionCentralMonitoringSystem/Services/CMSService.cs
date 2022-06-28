@@ -58,14 +58,10 @@ namespace FuelConsumptionCentralMonitoringSystem.Services
 
             Dictionary<int, TruckData> refuelTruck = new Dictionary<int, TruckData>();
 
-            int totalfuelConsumed = fuelConsumption.Sum(fuel => fuel.Value);
-            int requiredFuel = fuelConsumption.Count * 15 - totalfuelConsumed;
-            int requiredTrucks = totalfuelConsumed/ 35;
-            if(totalfuelConsumed % 35 != 0)
-            {
-                requiredTrucks++;
-            }
-            bool flip = false;
+            int totalfuelRemained = fuelConsumption.Sum(fuel => fuel.Value);
+            int requiredFuel = fuelConsumption.Count * 15 - totalfuelRemained;
+            int requiredTrucks = requiredFuel / 35  + 1;
+            
             int i = 0;
             int j = fuelConsumptionList.Count - 1;
 
@@ -73,7 +69,8 @@ namespace FuelConsumptionCentralMonitoringSystem.Services
             {
                 int currentRequiredFuel = 0;
                 refuelTruck.Add(t, new TruckData());
-                while (i < j)
+                bool flip = false;
+                while (i <= j)
                 {
                     if (flip)
                     {

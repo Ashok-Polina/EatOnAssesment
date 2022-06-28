@@ -1,6 +1,8 @@
 ﻿using FuelConsumptionCentralMonitoringSystem.Helpers;
 using FuelConsumptionCentralMonitoringSystem.Models;
 using FuelConsumptionCentralMonitoringSystem.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +17,9 @@ namespace FuelConsumptionCentralMonitoringSystem
     /// </summary>
     public class Program
     {
+      
         static async Task Main(string[] args)
         {
-            
             await Run(100, 10, 1);
 
             Logger.Log("done!");
