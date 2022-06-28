@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System;
 using FuelConsumptionCentralMonitoringSystem.Helpers;
 
 namespace FuelConsumptionCentralMonitoringSystem.Services
@@ -35,11 +36,11 @@ namespace FuelConsumptionCentralMonitoringSystem.Services
                 {
                     break;
                 }
-                Logger.Log($"Fuel Truck Id {truck} is going out with {refuelTruck[truck].requiredFuel + 5} gallons of fuel for the following vehicles.");
+                Logger.Log($"\n\nFuel Truck Id {truck} is going out with {refuelTruck[truck].requiredFuel + 5} gallons of fuel for the following vehicles.", ConsoleColor.Cyan);
 
                 foreach (var vehicleId in refuelTruck[truck].utilityTrucksId)
                 {
-                    Logger.Log($" \t Vehicle Id {vehicleId}, Current Fuel : {fuelRemained[vehicleId]} gallons, Fuel Needed : {15 - fuelRemained[vehicleId]} gallons");
+                    Logger.Log($" \t Vehicle Id {vehicleId}, Current Fuel : {fuelRemained[vehicleId]} gallons, Fuel Needed : {15 - fuelRemained[vehicleId]} gallons", ConsoleColor.Magenta);
                 }
             }
 
