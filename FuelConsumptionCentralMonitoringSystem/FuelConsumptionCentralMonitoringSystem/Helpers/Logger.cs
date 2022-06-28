@@ -1,8 +1,10 @@
 ﻿
-
 namespace FuelConsumptionCentralMonitoringSystem.Helpers
 {
     using System;
+    /// <summary>
+    /// Helper Method to log Messages to console
+    /// </summary>
         public class Logger
         {
             public static void Log(string text, ConsoleColor color = ConsoleColor.White)

@@ -10,17 +10,27 @@ using System.Threading.Tasks;
 
 namespace FuelConsumptionCentralMonitoringSystem
 {
+    /// <summary>
+    /// App Starts Here
+    /// </summary>
     public class Program
     {
         static async Task Main(string[] args)
         {
             
-            await Run(100, 40, 2);
+            await Run(100, 10, 1);
 
             Logger.Log("done!");
             Console.ReadLine();
         }
 
+        /// <summary>
+        /// Run Method To Initialize Producers and Consumers
+        /// </summary>
+        /// <param name="maxMessagesToBuffer"></param>
+        /// <param name="producersCount"></param>
+        /// <param name="consumersCount"></param>
+        /// <returns></returns>
         private static async Task Run(int maxMessagesToBuffer, int producersCount, int consumersCount)
         {
             Logger.Log("*** FUEL MONITORING SYSTEM STARTED ***", ConsoleColor.Red);
@@ -39,7 +49,7 @@ namespace FuelConsumptionCentralMonitoringSystem
                 vechiles.Add(new UtilityVechile(i,15));
             }
 
-            var tasks = new List<Task>(StartConsumers(channel, consumersCount, cancellationToken))
+            var tasks = new List<Task>(StartConsumers(channel, consumersCount, CancellationToken.None))
             {
                 ProduceAsync(channel, vechiles, producersCount, tokenSource)
             };
@@ -49,6 +59,13 @@ namespace FuelConsumptionCentralMonitoringSystem
 
         }
 
+        /// <summary>
+        /// This Method Starts our Consumers
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="consumersCount"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         private static Task[] StartConsumers(Channel<Message> channel, int consumersCount, CancellationToken cancellationToken)
         {
             var consumerTasks = Enumerable.Range(1, consumersCount)
@@ -57,6 +74,14 @@ namespace FuelConsumptionCentralMonitoringSystem
             return consumerTasks;
         }
 
+        /// <summary>
+        /// This Method Starts our Producers
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="vehicles"></param>
+        /// <param name="producersCount"></param>
+        /// <param name="tokenSource"></param>
+        /// <returns></returns>
         private static async Task ProduceAsync(Channel<Message> channel,
             List<UtilityVechile> vehicles,
             int producersCount,
@@ -70,15 +95,7 @@ namespace FuelConsumptionCentralMonitoringSystem
             })).ToArray();
 
             await Task.WhenAll(tasks);
-
-            //Logger.Log("done publishing, closing writer");
-            //channel.Writer.Complete();
-
-            ////Logger.Log("waiting for consumer to complete...");
-            ////await channel.Reader.Completion;
-
-            Logger.Log("Consumers done processing, shutting down...");
-            tokenSource.Cancel();
+           
         }
     }
 }

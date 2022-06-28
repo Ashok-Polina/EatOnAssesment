@@ -9,6 +9,9 @@ using FuelConsumptionCentralMonitoringSystem.Models;
 
 namespace FuelConsumptionCentralMonitoringSystem.Services
 {
+    /// <summary>
+    /// Service to Consume Messages from Channel
+    /// </summary>
     public class ConsumerService : IConsumer
     {
         private readonly ChannelReader<Message> _reader;
@@ -23,6 +26,11 @@ namespace FuelConsumptionCentralMonitoringSystem.Services
             _instanceId = instanceId;
         }
 
+        /// <summary>
+        /// To Read and Display Messages From Channels
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task BeginConsumeAsync(CancellationToken cancellationToken = default)
         {
             Logger.Log($"Consumer {_instanceId} > starting", ConsoleColor.Green);
@@ -36,20 +44,16 @@ namespace FuelConsumptionCentralMonitoringSystem.Services
                     if (message.CurrentGas <= 3)
                     {
                         CMSService.DisplayReport(fuelDictionary);
-                        await _reader.Completion;
+                         await _reader.Completion;
                         Logger.Log("Reading Completed...");
                     }
 
                 }
-
-                
             }
             catch (OperationCanceledException ex)
             {
                 Logger.Log($"Consumer {_instanceId} > forced stop", ConsoleColor.DarkRed);
             }
-
-            Logger.Log($"Consumer {_instanceId} > shutting down", ConsoleColor.DarkRed);
         }
 
     }

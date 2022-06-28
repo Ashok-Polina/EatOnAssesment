@@ -15,8 +15,15 @@ namespace FuelConsumptionCentralMonitoringSystem.Services
             utilityTrucksId = new List<int>();
         }
     }
+    /// <summary>
+    /// Central Monitoring System
+    /// </summary>
     public static class CMSService
     {
+        /// <summary>
+        /// To Display Consumption and Required Fuel Reports
+        /// </summary>
+        /// <param name="fuelRemained"></param>
         public static void DisplayReport(Dictionary<int, int> fuelRemained)
         {
            
@@ -39,6 +46,11 @@ namespace FuelConsumptionCentralMonitoringSystem.Services
         
         }
 
+        /// <summary>
+        /// To Calculate Required Refuelling Trucks and Required Fuel
+        /// </summary>
+        /// <param name="fuelConsumption"></param>
+        /// <returns></returns>
         private static Dictionary<int, TruckData> CreateRefuelTruckData(Dictionary<int, int> fuelConsumption)
         {
             var fuelConsumptionList = fuelConsumption.OrderBy(key => key.Value).ToList();
